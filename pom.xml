@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>scheper.mateus</groupId>
+    <artifactId>spring-gpt</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>spring-gpt</name>
+    <description>spring-gpt</description>
+    <properties>
+        <java.version>19</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+        <!--
+        Q: You suggested @NotNull. Which dependency is that?
+        A: The @NotNull annotation is part of the javax.validation package and it requires the javax.validation API dependency to be included in your project. Here is an example of how to include it in your Maven pom.xml file:
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        -->
+
+        <!--
+        Q: I can still creating clients with null addressess. Why?
+
+        A: This is because you have only specified the @NotNull constraint on the name field, but not on the address field. To enforce that the address field cannot be null, you need to add the @NotNull annotation to the address field in the Client entity as well:
+
+        import javax.validation.constraints.NotNull;
+
+        ...
+
+        public class Client {
+        ...
+        @NotNull
+        private String name;
+        @NotNull
+        private String address;
+        ...
+        }
+        With this change, attempting to create a client with a null address field should now result in a validation error.
+
+        Q: It already hass the @NotNull annotation
+        A: Oh, I see! It looks like there might be an issue with the setup of your validation framework. Can you check that your project has the necessary dependencies and configuration for Bean Validation (JSR-380)?
+
+        Here's an example of the necessary dependencies in a Maven pom.xml file:
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.5.Final</version>
+        </dependency>
+        -->
+
+        <!--
+        Q: Now I'm getting this error:
+        jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+
+        A: This error is occurring because you need to add the Jakarta Bean Validation API implementation in your project's classpath. To fix this, you can add the following dependency in your pom.xml file:
+
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>2.0.2</version>
+        </dependency>-->
+
+
+        <!-- After trying to solve the no validation issue, I decided to put the correct dependency manually: -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- After this, I just has to go to the entities and import the jakarta version of @NotNull instead of the javax version. -->
+
+        <!--
+        Q: Can you make my application use lombok and change the entities accordingly?
+        A: Sure! You can add the Lombok dependency in your pom.xml file:
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
